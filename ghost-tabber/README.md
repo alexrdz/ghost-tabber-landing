@@ -50,10 +50,10 @@ The extension requires three icon files in the `icons/` directory:
 
 ### Archive Page
 
-- Click "📚 Open Archive" in the popup
+- Click "Open Archive" in the popup
 - Search archived tabs by title or URL
-- Click "↗️ Restore" to reopen a tab
-- Click "🗑️" to delete from archive
+- Click "Restore" to reopen a tab
+- Click "Delete" to delete from archive
 - Click "Clear All" to remove all archived tabs
 
 ## How It Works
@@ -85,43 +85,6 @@ The extension requires three icon files in the `icons/` directory:
 - **Background:** Service worker with alarm-based checks
 - **UI:** Vanilla JavaScript, no frameworks
 
-## File Structure
-
-```
-ghost-tabber/
-├── manifest.json          # Extension configuration
-├── background.js          # Service worker (tab tracking & auto-close)
-├── archive.html          # Archive page UI
-├── archive.js            # Archive page logic
-├── popup.html            # Extension popup UI
-├── popup.js              # Popup logic
-├── styles/
-│   ├── archive.css       # Archive page styles
-│   └── popup.css         # Popup styles
-└── icons/
-    ├── icon-16.png       # 16x16 icon (you need to create)
-    ├── icon-48.png       # 48x48 icon (you need to create)
-    └── icon-128.png      # 128x128 icon (you need to create)
-```
-
-## Development
-
-No build process required! Just edit the files and reload the extension:
-
-1. Make your changes
-2. Go to `chrome://extensions`
-3. Click the reload icon on the Ghost Tabber card
-4. Test your changes
-
-## Testing
-
-1. **Install the extension** in developer mode
-2. **Set a short timeout** (5 minutes) for testing
-3. **Open several tabs** and don't interact with them
-4. **Wait for the timeout** and verify tabs are archived
-5. **Check the archive page** to see archived tabs
-6. **Test restore** by clicking a tab
-7. **Test search** by typing in the search box
 
 ## Troubleshooting
 

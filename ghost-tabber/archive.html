@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GhostTabber Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style type="text/css">
+        /* --- ETHEREAL DESIGN TOKENS --- */
+        :root {
+            --bg-void: #09090E;
+            --ghost-glass: rgba(255, 255, 255, 0.03);
+            --ghost-glass-hover: rgba(255, 255, 255, 0.08);
+            --ghost-border: rgba(255, 255, 255, 0.08);
+
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.55);
+
+            --glow-purple: #B088FF;
+            --glow-cyan: #00F0FF;
+            --glow-red: #FF4466;
+
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 4rem;
+
+            --transition-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-smooth: 0.3s ease;
+        }
+
+        /* --- BASE STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-void); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; border: 2px solid var(--bg-void); }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* --- AMBIENT BACKGROUND EFFECTS --- */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
+            animation: float-orb 15s infinite alternate ease-in-out;
+        }
+        .orb-1 {
+            background: var(--glow-purple);
+            width: 40vw; height: 40vw;
+            top: -10vw; left: -10vw;
+        }
+        .orb-2 {
+            background: var(--glow-cyan);
+            width: 35vw; height: 35vw;
+            bottom: -5vw; right: -5vw;
+            animation-delay: -7s;
+            opacity: 0.2;
+        }
+
+        @keyframes float-orb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        /* --- HEADER --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--ghost-border);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .ghost-icon {
+            width: 56px;
+            height: 56px;
+            animation: levitate 4s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px rgba(176, 136, 255, 0.4));
+        }
+
+        @keyframes levitate {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #fff, var(--glow-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .caption {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- CONTROLS --- */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--ghost-glass);
+            border: 1px solid var(--ghost-border);
+            color: var(--text-primary);
+            padding: 16px 20px 16px 48px;
+            font-family: inherit;
+            font-size: 1rem;
+            border-radius: 12px;
+            outline: none;
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .search-input:focus {
+            border-color: var(--glow-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            width: 20px;
+            height: 20px;
+        }
+
+        /* --- TAB LIST --- */
+        .archive-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tab-card {
+            background: var(--ghost-glass);
+            border: 1px solid var(--ghost-border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: var(--transition-smooth);
+            animation: slide-up 0.4s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .tab-card:hover {
+            background: var(--ghost-glass-hover);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slide-up {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-favicon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .tab-favicon img { width: 100%; height: 100%; object-fit: cover; }
+
+        .tab-info {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .tab-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .tab-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .tab-url {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+            color: var(--glow-cyan);
+            opacity: 0.8;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 10px 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        .btn-revive {
+            background: linear-gradient(135deg, var(--glow-purple), #7b42f6);
+            color: #fff;
+            border: none;
+            box-shadow: 0 4px 15px rgba(176, 136, 255, 0.2);
+        }
+        .btn-revive:hover { box-shadow: 0 6px 20px rgba(176, 136, 255, 0.4); }
+
+        .btn-banish {
+            background: transparent;
+            border: 1px solid var(--ghost-border);
+            color: var(--text-secondary);
+        }
+        .btn-banish:hover {
+            background: rgba(255, 68, 102, 0.1);
+            border-color: var(--glow-red);
+            color: var(--glow-red);
+        }
+
+        .btn-danger-outline {
+            background: transparent;
+            border: 1px solid var(--ghost-border);
+            color: var(--text-primary);
+            padding: 14px 24px;
+            border-radius: 12px;
+        }
+        .btn-danger-outline:hover {
+            background: rgba(255, 68, 102, 0.15);
+            border-color: var(--glow-red);
+            color: var(--glow-red);
+            box-shadow: 0 0 15px rgba(255, 68, 102, 0.2);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-xl) 0;
+            color: var(--text-secondary);
+            display: none;
+        }
+        .empty-state h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glow Background -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="app-container">
+
+        <!-- Header -->
+        <header>
+            <div class="header-left">
+                <svg class="ghost-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="url(#ghost-grad)"/>
+                    <circle cx="38" cy="45" r="5" fill="#09090E"/>
+                    <circle cx="62" cy="45" r="5" fill="#09090E"/>
+                    <defs>
+                        <linearGradient id="ghost-grad" x1="50" y1="15" x2="50" y2="90" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#FFFFFF"/>
+                            <stop offset="1" stop-color="#E2D4FF" stop-opacity="0.7"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div>
+                    <h1>The Archive</h1>
+                    <p class="caption">A resting place for your idle, vanished tabs.</p>
+                </div>
+            </div>
+            <button class="btn btn-danger-outline" id="clearAllBtn">Exorcise All</button>
+        </header>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-bar">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search the graveyard (URLs or Titles)...">
+            </div>
+            <div style="color: var(--text-secondary); white-space: nowrap; font-size: 0.9rem;" id="totalCount">0 archived tabs</div>
+        </div>
+
+        <!-- Archive List -->
+        <div class="archive-list" id="archiveList">
+            <!-- Items injected by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+            <svg style="width: 80px; height: 80px; opacity: 0.3; margin-bottom: 20px;" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 25C38 25 28 35 28 47V75L35 68L42 75L50 68L58 75L65 68L72 75V47C72 35 62 25 50 25Z" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>No Spirits Here</h3>
+            <p>Your browser is currently un-haunted. GhostTabber hasn't closed any tabs yet.</p>
+        </div>
+
+    </div>
+
+    <script src="archive.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghost Tabber — Archive Index</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/archive.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <span class="mono-label">Archive System - GT-SYS_01</span>
+        <button id="clearAllBtn" class="btn-danger">Purge All</button>
+      </div>
+      <h1>ARCHIVE<br>INDEX</h1>
+      <p class="caption">Historical registry of closed browser elements.</p>
+    </header>
+
+    <div class="toolbar">
+      <div class="search-container">
+        <span class="mono-label">Filter</span>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search by title or URL..."
+          autocomplete="off"
+        >
+      </div>
+      <div class="stats-inline">
+        <span class="mono-label">Count</span>
+        <span id="totalCount" class="stat-inline">0</span>
+      </div>
+    </div>
+
+    <div id="archiveList" class="archive-list">
+      <!-- Tabs will be inserted here by JavaScript -->
+    </div>
+
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="empty-content">
+        <span class="mono-label" style="color: var(--color-accent)">System Status</span>
+        <h2>NO ARCHIVED DATA</h2>
+        <p class="caption">Archive index is empty. Tabs will appear here when automatically closed.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="archive.js"></script>
+</body>
+</html>

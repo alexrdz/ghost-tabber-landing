@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GhostTabber - Vanish Idle Tabs</title>
+    <meta name="description" content="A beautifully eerie browser extension that automatically archives and closes inactive tabs to keep your workspace clean.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style type="text/css">
+        /* --- ETHEREAL DESIGN TOKENS --- */
+        :root {
+            --bg-void: #09090E;
+            --ghost-glass: rgba(255, 255, 255, 0.03);
+            --ghost-glass-hover: rgba(255, 255, 255, 0.08);
+            --ghost-border: rgba(255, 255, 255, 0.08);
+
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.55);
+
+            --glow-purple: #B088FF;
+            --glow-cyan: #00F0FF;
+
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 3rem;
+            --space-xl: 6rem;
+
+            --transition-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-smooth: 0.3s ease;
+        }
+
+        /* --- BASE STYLES --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- AMBIENT BACKGROUND EFFECTS --- */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.25;
+            z-index: 0;
+            pointer-events: none;
+            animation: float-orb 15s infinite alternate ease-in-out;
+        }
+        .orb-1 {
+            background: var(--glow-purple);
+            width: 50vw; height: 50vw;
+            max-width: 600px; max-height: 600px;
+            top: -10%; left: -10%;
+        }
+        .orb-2 {
+            background: var(--glow-cyan);
+            width: 40vw; height: 40vw;
+            max-width: 500px; max-height: 500px;
+            bottom: 10%; right: -5%;
+            animation-delay: -7s;
+            opacity: 0.15;
+        }
+
+        @keyframes float-orb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5vw, 5vw) scale(1.1); }
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--ghost-border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            filter: drop-shadow(0 0 8px rgba(176, 136, 255, 0.4));
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: var(--space-xl) 0 var(--space-lg);
+        }
+
+        .hero-ghost {
+            width: 120px;
+            height: 120px;
+            margin-bottom: var(--space-lg);
+            animation: levitate 4s infinite ease-in-out;
+            filter: drop-shadow(0 10px 30px rgba(176, 136, 255, 0.3));
+        }
+
+        @keyframes levitate {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: var(--space-md);
+            background: linear-gradient(135deg, #ffffff, var(--glow-purple), var(--glow-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            max-width: 900px;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 3vw, 1.4rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: var(--space-lg);
+            line-height: 1.6;
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 36px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            outline: none;
+            border: none;
+        }
+
+        .btn:active { transform: scale(0.95); }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--glow-purple), #7b42f6);
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(176, 136, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 12px 40px rgba(176, 136, 255, 0.5);
+            transform: translateY(-4px);
+        }
+
+        .btn-secondary {
+            background: var(--ghost-glass);
+            border: 1px solid var(--ghost-border);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: var(--ghost-glass-hover);
+            border-color: var(--glow-cyan);
+            color: var(--glow-cyan);
+        }
+
+        /* --- FEATURES GRID --- */
+        .features {
+            padding: var(--space-lg) 0 var(--space-xl);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .feature-card {
+            background: var(--ghost-glass);
+            border: 1px solid var(--ghost-border);
+            border-radius: 20px;
+            padding: var(--space-lg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover {
+            background: var(--ghost-glass-hover);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: var(--space-md);
+            color: var(--glow-cyan);
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: var(--space-xs);
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--ghost-border);
+            padding: var(--space-lg) 0;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        @media (max-width: 768px) {
+            .hero { padding: var(--space-lg) 0; }
+            .btn-primary { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glow Background -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <a href="#" class="logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="#fff"/>
+                    <circle cx="38" cy="45" r="5" fill="#09090E"/>
+                    <circle cx="62" cy="45" r="5" fill="#09090E"/>
+                </svg>
+                GhostTabber
+            </a>
+            <!-- <a href="#install" class="btn btn-secondary">Add to Chrome</a> -->
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <svg class="hero-ghost" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="url(#ghost-grad)"/>
+                <circle cx="38" cy="45" r="5" fill="#09090E"/>
+                <circle cx="62" cy="45" r="5" fill="#09090E"/>
+                <defs>
+                    <linearGradient id="ghost-grad" x1="50" y1="15" x2="50" y2="90" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FFFFFF"/>
+                        <stop offset="1" stop-color="#B088FF" stop-opacity="0.7"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <h1>Exorcise your browser clutter.</h1>
+            <p>GhostTabber silently archives and vanishes your idle tabs, keeping your workspace fast, focused, and beautifully haunted.</p>
+
+            <a href="./ghost-tabber.zip" class="btn btn-primary" id="install" download="ghost-tabber.zip">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                Download GhostTabber Free
+            </a>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3>Automated Vanishing</h3>
+                <p>Set a lifespan parameter (5 minutes to 1 hour). If you ignore a tab for that long, GhostTabber automatically sweeps it into the Archive.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="color: var(--glow-purple); background: rgba(176, 136, 255, 0.1);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                    </svg>
+                </div>
+                <h3>Smart Exceptions</h3>
+                <p>Don't want your music or important docs disappearing? Easily configure the extension to protect pinned or audible tabs from the sweep.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="color: #FF4466; background: rgba(255, 68, 102, 0.1);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12h4l2-9 5 18 3-10 5 3"></path>
+                    </svg>
+                </div>
+                <h3>Revive the Dead</h3>
+                <p>Lost something important? Access your beautifully designed Archive to revive vanished tabs or banish them forever with a single click.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="logo">
+                    <svg viewBox="0 0 100 100" fill="none" style="width: 20px; height: 20px; filter: none; opacity: 0.5;">
+                        <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="#fff"/>
+                    </svg>
+                    <span style="font-size: 1rem; opacity: 0.5;">GhostTabber</span>
+                </div>
+                <p>&copy; 2024 GhostTabber. A tool for keeping browsers beautifully haunted.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

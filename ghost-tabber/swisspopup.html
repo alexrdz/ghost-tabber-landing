@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghost Tabber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/popup.css">
+</head>
+<body>
+
+  <header style="margin-bottom: var(--space-lg);">
+    <span class="mono-label">Utility - v1.0.0</span>
+    <h1>GHOST<br>TABBER</h1>
+    <p class="caption">Cleaning idle browser elements automatically.</p>
+  </header>
+
+  <!-- Status -->
+  <div class="section flex-between">
+    <div>
+      <span class="mono-label" style="margin:0">Status</span>
+      <h2 id="statusText">Active</h2>
+    </div>
+    <label class="toggle-switch">
+      <input type="checkbox" id="enabledToggle" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <span class="mono-label" style="color: var(--color-accent)">Archived</span>
+      <div class="stat-value" id="archivedCount">0</div>
+      <span class="mono-label" style="font-size: 0.6rem; opacity: 0.6">Total history</span>
+    </div>
+    <div class="stat-item">
+      <span class="mono-label">Observed</span>
+      <div class="stat-value" id="monitoredCount">0</div>
+      <span class="mono-label" style="font-size: 0.6rem; opacity: 0.6">Live tabs</span>
+    </div>
+  </div>
+
+  <!-- Configuration -->
+  <div class="section">
+    <div class="control-group">
+      <span class="mono-label">Lifespan Parameter</span>
+      <div class="select-wrapper">
+        <select id="timeoutSelect">
+          <option value="10000">⚡ 10 Seconds (Test)</option>
+          <option value="30000">⚡ 30 Seconds (Test)</option>
+          <option value="60000">⚡ 1 Minute (Test)</option>
+          <option value="300000">5 Minutes</option>
+          <option value="600000">10 Minutes</option>
+          <option value="1800000" selected>30 Minutes</option>
+          <option value="3600000">1 Hour</option>
+          <option value="7200000">2 Hours</option>
+          <option value="14400000">4 Hours</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <span class="mono-label">Global Exceptions</span>
+      <label class="checkbox-row">
+        <input type="checkbox" id="excludePinnedCheck" checked>
+        <span>Protect Pinned Tabs</span>
+      </label>
+      <label class="checkbox-row">
+        <input type="checkbox" id="excludeAudibleCheck" checked>
+        <span>Protect Audible Tabs</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Interaction -->
+  <div class="actions">
+    <button id="openArchiveBtn" class="btn btn-primary">Open Archive Index</button>
+    <button id="checkNowBtn" class="btn btn-secondary">Force Sweep</button>
+  </div>
+
+  <footer>
+    <span class="mono-label">by Tech-Mex.io</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

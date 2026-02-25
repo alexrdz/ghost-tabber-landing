@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GhostTabber Promo Asset Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style type="text/css">
+        /* --- ETHEREAL DESIGN TOKENS --- */
+        :root {
+            --bg-void: #09090E;
+            --ghost-glass: rgba(255, 255, 255, 0.03);
+            --ghost-border: rgba(255, 255, 255, 0.08);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.55);
+            --glow-purple: #B088FF;
+            --glow-cyan: #00F0FF;
+            --glow-red: #FF4466;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #222; /* Page background, darker to see the assets */
+            color: var(--text-primary);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .instructions {
+            max-width: 800px;
+            background: rgba(0,0,0,0.5);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #444;
+            line-height: 1.6;
+        }
+        .instructions h2 { font-family: 'Space Grotesk'; color: var(--glow-cyan); margin-top: 0;}
+        code { background: #000; padding: 4px 8px; border-radius: 4px; color: var(--glow-purple); }
+
+        /* --- ASSET CONTAINER BASE --- */
+        .asset {
+            background-color: var(--bg-void);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            /* This ensures Chrome takes a pixel-perfect snapshot with NO alpha */
+        }
+
+        /* --- ORBS FOR ASSETS --- */
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); z-index: 0; pointer-events: none; }
+        .orb-p { background: var(--glow-purple); }
+        .orb-c { background: var(--glow-cyan); }
+
+        /* --- TYPOGRAPHY --- */
+        .title-gradient {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--glow-purple), var(--glow-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        /* --- MOCKUP UI ELEMENTS (Reused from previous code) --- */
+        .mockup-popup {
+            width: 360px;
+            background: rgba(9, 9, 14, 0.85);
+            border: 1px solid var(--ghost-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(176, 136, 255, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* --- 1. SCREENSHOT (1280x800) --- */
+        .screenshot-1 {
+            width: 1280px;
+            height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 100px;
+        }
+        .screenshot-1 .orb-p { width: 800px; height: 800px; top: -200px; right: -200px; opacity: 0.3; }
+        .screenshot-1 .orb-c { width: 600px; height: 600px; bottom: -100px; left: -100px; opacity: 0.2; }
+
+        .screenshot-text { z-index: 2; max-width: 550px; }
+        .screenshot-text h1 { font-size: 5rem; margin-bottom: 24px; }
+        .screenshot-text p { font-size: 1.8rem; color: var(--text-secondary); }
+
+        /* --- 2. SMALL TILE (440x280) --- */
+        .small-tile {
+            width: 440px;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .small-tile .orb-p { width: 300px; height: 300px; top: -50px; left: -50px; opacity: 0.4; filter: blur(60px); }
+        .small-tile .orb-c { width: 300px; height: 300px; bottom: -50px; right: -50px; opacity: 0.3; filter: blur(60px); }
+
+        .small-tile svg { width: 80px; height: 80px; z-index: 2; filter: drop-shadow(0 0 20px rgba(176, 136, 255, 0.5)); margin-bottom: 10px;}
+        .small-tile h2 { font-size: 2.8rem; z-index: 2; margin: 0; }
+        .small-tile p { font-size: 1.1rem; color: var(--glow-cyan); z-index: 2; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;}
+
+        /* --- 3. MARQUEE TILE (1400x560) --- */
+        .marquee-tile {
+            width: 1400px;
+            height: 560px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+        }
+        .marquee-tile .orb-p { width: 800px; height: 800px; left: 300px; top: -100px; opacity: 0.4; filter: blur(120px); }
+        .marquee-tile .orb-c { width: 600px; height: 600px; left: -100px; bottom: -200px; opacity: 0.2; }
+
+        .marquee-brand { z-index: 2; display: flex; flex-direction: column; align-items: center; }
+        .marquee-brand svg { width: 140px; height: 140px; filter: drop-shadow(0 0 30px rgba(176, 136, 255, 0.4)); margin-bottom: 20px;}
+        .marquee-brand h1 { font-size: 4.5rem; margin: 0;}
+        .marquee-brand p { font-size: 1.5rem; color: var(--text-secondary); margin-top: 10px;}
+
+    </style>
+</head>
+<body>
+
+    <div class="instructions">
+        <h2>📸 How to export these perfect assets:</h2>
+        <ol>
+            <li>Right-click anywhere on the specific image box you want and select <b>Inspect</b>.</li>
+            <li>In the Chrome DevTools Elements panel, ensure the <code>&lt;div class="asset..."&gt;</code> element is highlighted.</li>
+            <li>Press <b>Ctrl+Shift+P</b> (Windows) or <b>Cmd+Shift+P</b> (Mac) to open the Command Menu.</li>
+            <li>Type <code>Capture node screenshot</code> and hit Enter.</li>
+            <li><i>Boom!</i> Chrome will instantly download a perfectly cropped, 24-bit PNG with no alpha channel (solid background) at the exact pixel dimensions required by the Web Store.</li>
+        </ol>
+    </div>
+
+    <!-- 1. MAIN SCREENSHOT (1280x800) -->
+    <div class="asset screenshot-1" id="screenshot">
+        <div class="orb orb-p"></div>
+        <div class="orb orb-c"></div>
+
+        <div class="screenshot-text">
+            <h1 class="title-gradient">Exorcise your browser clutter.</h1>
+            <p>GhostTabber silently archives and vanishes your idle tabs, keeping your workspace fast and focused.</p>
+        </div>
+
+        <div class="mockup-popup" style="transform: rotate(-3deg) scale(1.1);">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                <svg viewBox="0 0 100 100" fill="none" style="width: 48px; height: 48px;">
+                    <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="#fff"/>
+                    <circle cx="38" cy="45" r="5" fill="#09090E"/>
+                    <circle cx="62" cy="45" r="5" fill="#09090E"/>
+                </svg>
+                <div>
+                    <div class="title-gradient" style="font-size: 1.8rem;">GhostTabber</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">Vanishing your idle tabs.</div>
+                </div>
+            </div>
+
+            <div style="background: var(--ghost-glass); border: 1px solid var(--ghost-border); border-radius: 12px; padding: 16px; margin-bottom: 12px;">
+                <span style="font-family: 'Space Grotesk'; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--glow-purple);">Monitoring Status</span>
+                <div style="font-size: 1.3rem; font-weight: 600; color: var(--glow-cyan);">Active & Hunting</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div style="background: var(--ghost-glass); border: 1px solid var(--ghost-border); border-radius: 12px; padding: 16px; text-align: center;">
+                    <div style="font-family: 'Space Grotesk'; font-size: 2.5rem; font-weight: 700;">24</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Tabs Vanished</div>
+                </div>
+                <div style="background: var(--ghost-glass); border: 1px solid var(--ghost-border); border-radius: 12px; padding: 16px; text-align: center;">
+                    <div style="font-family: 'Space Grotesk'; font-size: 2.5rem; font-weight: 700;">08</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Monitored</div>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, var(--glow-purple), #7b42f6); color: #fff; padding: 16px; border-radius: 12px; text-align: center; font-family: 'Space Grotesk'; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 20px;">
+                Open Archive Index
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. SMALL PROMO TILE (440x280) -->
+    <div class="asset small-tile" id="small-promo">
+        <div class="orb orb-p"></div>
+        <div class="orb orb-c"></div>
+
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="#fff"/>
+            <circle cx="38" cy="45" r="5" fill="#09090E"/>
+            <circle cx="62" cy="45" r="5" fill="#09090E"/>
+        </svg>
+        <h2 class="title-gradient">GhostTabber</h2>
+        <p>Vanish Idle Tabs</p>
+    </div>
+
+    <!-- 3. MARQUEE PROMO TILE (1400x560) -->
+    <div class="asset marquee-tile" id="marquee-promo">
+        <div class="orb orb-p"></div>
+        <div class="orb orb-c"></div>
+
+        <div class="marquee-brand">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="#fff"/>
+                <circle cx="38" cy="45" r="5" fill="#09090E"/>
+                <circle cx="62" cy="45" r="5" fill="#09090E"/>
+            </svg>
+            <h1 class="title-gradient">GhostTabber</h1>
+            <p>A resting place for idle tabs.</p>
+        </div>
+
+        <div class="mockup-popup" style="transform: scale(1.1) translateY(20px);">
+             <!-- Decorative UI representation of the Archive page -->
+             <div style="font-family: 'Space Grotesk'; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 20px;">The Archive</div>
+
+             <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--ghost-border); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                 <span style="color: var(--text-secondary);">🔍 Search the graveyard...</span>
+             </div>
+
+             <div style="background: var(--ghost-glass); border: 1px solid var(--ghost-border); border-radius: 12px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px;">
+                 <div style="width: 30px; height: 30px; background: rgba(176,136,255,0.2); border-radius: 6px;"></div>
+                 <div style="flex-grow: 1;">
+                     <div style="font-family: 'Space Grotesk'; font-size: 0.9rem; font-weight: 600;">Figma - Ghost Design</div>
+                     <div style="font-size: 0.75rem; color: var(--glow-cyan);">figma.com/file...</div>
+                 </div>
+             </div>
+
+             <div style="background: var(--ghost-glass); border: 1px solid var(--ghost-border); border-radius: 12px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px;">
+                <div style="width: 30px; height: 30px; background: rgba(255,68,102,0.2); border-radius: 6px;"></div>
+                <div style="flex-grow: 1;">
+                    <div style="font-family: 'Space Grotesk'; font-size: 0.9rem; font-weight: 600;">Spooky Ambient Mix</div>
+                    <div style="font-size: 0.75rem; color: var(--glow-cyan);">youtube.com/watch...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

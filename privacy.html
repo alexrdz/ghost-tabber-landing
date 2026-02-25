@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - GhostTabber</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <style type="text/css">
+        /* --- ETHEREAL DESIGN TOKENS --- */
+        :root {
+            --bg-void: #09090E;
+            --ghost-glass: rgba(255, 255, 255, 0.03);
+            --ghost-border: rgba(255, 255, 255, 0.08);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.65);
+            --glow-purple: #B088FF;
+            --glow-cyan: #00F0FF;
+
+            --space-md: 1.5rem;
+            --space-lg: 3rem;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- AMBIENT BACKGROUND EFFECTS --- */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .orb-1 {
+            background: var(--glow-purple);
+            width: 40vw; height: 40vw;
+            top: -10%; left: -10%;
+        }
+        .orb-2 {
+            background: var(--glow-cyan);
+            width: 30vw; height: 30vw;
+            bottom: 10%; right: -5%;
+            opacity: 0.1;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--space-lg) var(--space-md) 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-primary);
+        }
+
+        h1 {
+            font-size: 3rem;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, var(--glow-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-lg);
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--glow-cyan);
+        }
+
+        p, ul {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        a {
+            color: var(--glow-purple);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--glow-cyan);
+            text-decoration: underline;
+        }
+
+        .content-box {
+            background: var(--ghost-glass);
+            border: 1px solid var(--ghost-border);
+            border-radius: 16px;
+            padding: var(--space-lg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            margin-top: 2rem;
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: var(--space-lg);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glow Background -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <a href="/" class="logo">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 15C33.4315 15 20 28.4315 20 45V85C20 87.7614 22.2386 90 25 90C26.3807 90 27.7046 89.4518 28.6803 88.4761L31.3197 85.8368C33.2723 83.8841 36.4384 83.8841 38.391 85.8368L41.609 89.0547C43.5616 91.0074 46.7277 91.0074 48.6803 89.0547L51.3197 86.4154C53.2723 84.4628 56.4384 84.4628 58.391 86.4154L61.609 89.6333C63.5616 91.586 66.7277 91.586 68.6803 89.6333L71.3197 86.9939C72.2954 86.0182 73.6193 85.4701 75 85.4701C77.7614 85.4701 80 87.7086 80 90.4701V45C80 28.4315 66.5685 15 50 15Z" fill="#fff"/>
+                    <circle cx="38" cy="45" r="5" fill="#09090E"/>
+                    <circle cx="62" cy="45" r="5" fill="#09090E"/>
+                </svg>
+                GhostTabber
+            </a>
+            <a href="/" style="font-size: 0.9rem;">&larr; Back to Home</a>
+        </nav>
+
+        <h1>Privacy Policy</h1>
+        <div class="last-updated">Last Updated: October 2024</div>
+
+        <div class="content-box">
+            <p>At <strong>GhostTabber</strong>, we believe that your browser history and habits are your own business. We built this extension to be a lightweight, local-only tool that prioritizes your privacy above all else.</p>
+
+            <p>This Privacy Policy explains exactly how our extension works, what data it accesses, and how that data is stored.</p>
+
+            <h2>1. Data Collection & Storage</h2>
+            <p><strong>We do not collect, transmit, or sell your data.</strong></p>
+            <p>GhostTabber operates 100% locally on your machine. In order to function, the extension accesses information about your currently open tabs (specifically the URL, title, and favicon). When a tab is closed by the extension, this information is saved to your browser's local storage so that you can view and restore it from the "Archive" page later.</p>
+            <p>This data never leaves your computer. We do not have servers, we do not use third-party analytics, and we have no way of seeing what tabs you have open or archived.</p>
+
+            <h2>2. Extension Permissions</h2>
+            <p>To provide its core functionality, GhostTabber requires the following Chrome permissions. Here is exactly why we need them:</p>
+            <ul>
+                <li><strong><code>tabs</code></strong>: Used to monitor how long tabs have been inactive, read tab information (titles/URLs) to save to your local Archive, and programmatically close the tabs once they exceed your specified inactivity threshold.</li>
+                <li><strong><code>storage</code></strong>: Used to save your personal extension preferences (like your inactivity timeout duration) and to securely store the list of your archived tabs locally on your device.</li>
+                <li><strong><code>alarms</code></strong>: Used to run a lightweight, periodic background check to evaluate if any currently open tabs have been idle long enough to be archived.</li>
+            </ul>
+
+            <h2>3. Third-Party Services</h2>
+            <p>GhostTabber contains absolutely no tracking scripts, advertising SDKs, or third-party analytics tools. Because your data is never transmitted to us or anyone else, there is no third-party data sharing involved.</p>
+
+            <h2>4. Your Control</h2>
+            <p>You have complete control over your data. You can manually delete individual tabs from the Archive or use the "Exorcise All" button to permanently wipe your entire history of archived tabs from your local storage. If you uninstall the extension, all locally stored data associated with GhostTabber will be automatically deleted by your browser.</p>
+
+            <h2>5. Changes to This Policy</h2>
+            <p>If we ever make updates to the extension that change how we handle permissions or local data, we will update this Privacy Policy accordingly. However, our commitment to keeping this tool a local-only, private utility will never change.</p>
+
+            <h2>6. Contact Us</h2>
+            <p>If you have any questions or concerns about this Privacy Policy or how GhostTabber handles your local data, you can reach out to the developer at: <a href="mailto:drinkhorchata@duck.com">drinkhorchata@duck.com</a>.</p>
+        </div>
+    </div>
+
+</body>
+</html>
